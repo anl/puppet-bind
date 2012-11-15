@@ -27,4 +27,13 @@
 #
 class bind {
 
+  case $::operatingsystem {
+    ubuntu: {
+      $pkgs = [ 'bind9' ]
+    }
+    default: {
+      fail("Module ${module_name} is not supported on ${::operatingsystem}")
+    }
+  }
+
 }
