@@ -36,4 +36,6 @@ class bind {
     }
   }
 
+  package { $pkgs: ensure => present }
+
 }
