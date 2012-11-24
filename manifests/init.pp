@@ -5,8 +5,8 @@
 # Currently tested/supported on Ubuntu 12.04.  This module will do
 # minimal configuration of BIND; service manipulation and zone
 # configuration is better left to an orchestration tool.  Note
-# however that the service *can* be enabled/disabled (default:
-# manual) and run/stopped from this module.
+# however that the service *must* be enabled/disabled (default:
+# enabled) and *can* be run/stopped from this module.
 #
 # === Parameters
 #
@@ -37,7 +37,7 @@
 #
 class bind (
   $control_svc_run = false,
-  $enable = 'manual',
+  $enable = true,
   $running = true
   ) {
 
