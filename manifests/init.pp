@@ -10,6 +10,16 @@
 #
 # === Parameters
 #
+# For parameters which take boolean values, note that they must be
+# quoted if they are being passed in via Hiera.  For example, set a value
+# like this in a Hiera YAML file:
+#
+# bind::control_svc_run: 'false'
+#
+# And not like:
+#
+# bind::control_svc_run: false
+#
 # [*control_svc_run*]
 #   Whether Puppet should manage if the service is running or not.
 #   By default, this is set to 'true' - Puppet does start/stop
