@@ -12,7 +12,7 @@
 #
 # [*control_svc_run*]
 #   Whether Puppet should manage if the service is running or not.
-#   By default, this is set to 'manual' - Puppet does not start/stop
+#   By default, this is set to 'true' - Puppet does start/stop
 #   the service.
 #
 # [*enable*]
