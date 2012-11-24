@@ -23,7 +23,8 @@
 #
 # === Copyright
 #
-# Copyright 2012 Andrew Leonard, Seattle Biomedical Research Institute
+# Originally Copyright 2012 Andrew Leonard, Seattle Biomedical Research Institute
+# Portions Copyright 2012, Andrew Leonard, Hurricane Ridge Consulting
 #
 class bind {
 
