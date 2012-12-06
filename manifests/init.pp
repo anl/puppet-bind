@@ -47,7 +47,7 @@
 class bind (
   $control_svc_run = false,
   $enable = true,
-  $running = true
+  $running = true,
   $pkgs = $bind::params::pkgs
   ) inherits bind::params {
 
