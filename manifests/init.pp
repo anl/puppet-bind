@@ -61,5 +61,8 @@ class bind (
     Service { ensure => $running }
   }
 
-  service { $bind::params::svc: enable => $enable }
+  service { $bind::params::svc:
+    enable  => $enable,
+    require => Package[$pkgs],
+  }
 }
