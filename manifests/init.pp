@@ -47,18 +47,9 @@
 class bind (
   $control_svc_run = false,
   $enable = true,
-  $running = true
-  ) {
-
-  case $::operatingsystem {
-    ubuntu: {
-      $pkgs = [ 'bind9' ]
-      $svc = 'bind9'
-    }
-    default: {
-      fail("Module ${module_name} is not supported on ${::operatingsystem}")
-    }
-  }
+  $running = true,
+  $pkgs = $bind::params::pkgs
+  ) inherits bind::params {
 
   package { $pkgs: ensure => present }
 
@@ -69,5 +60,5 @@ class bind (
     Service { ensure => $running }
   }
 
-  service { $svc: enable => $enable }
+  service { $bind::params::svc: enable => $enable }
 }
