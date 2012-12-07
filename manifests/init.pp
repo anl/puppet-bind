@@ -52,7 +52,10 @@ class bind (
   $provider = $bind::params::provider
   ) inherits bind::params {
 
-  package { $pkgs: ensure => present }
+  package { $pkgs:
+    ensure   => present,
+    provider => $provider,
+  }
 
   # Use a resource default to enforce desired state of service run control;
   # this could break badly if we ever define more than one service in this
@@ -62,8 +65,7 @@ class bind (
   }
 
   service { $bind::params::svc:
-    enable   => $enable,
-    provider => $provider,
-    require  => Package[$pkgs],
+    enable  => $enable,
+    require => Package[$pkgs],
   }
 }
