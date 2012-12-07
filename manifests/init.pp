@@ -49,7 +49,8 @@ class bind (
   $control_svc_run = false,
   $enable = true,
   $running = true,
-  $pkgs = $bind::params::pkgs
+  $pkgs = $bind::params::pkgs,
+  $provider = $bind::params::provider
   ) inherits bind::params {
 
   package { $pkgs: ensure => present }
@@ -62,7 +63,8 @@ class bind (
   }
 
   service { $bind::params::svc:
-    enable  => $enable,
-    require => Package[$pkgs],
+    enable   => $enable,
+    provider => $provider,
+    require  => Package[$pkgs],
   }
 }
