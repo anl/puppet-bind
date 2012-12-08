@@ -26,7 +26,7 @@ class bind::params {
 
   case $::operatingsystem {
     ubuntu: {
-      $pkgs = [ 'bind9' ]
+      $pkgs = { 'bind9' => undef }
       $provider = 'apt'
       $svc = 'bind9'
     }

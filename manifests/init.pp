@@ -36,6 +36,10 @@
 #
 #  class bind { enable => false }
 #
+# === Requires
+#
+# puppetlabs/stdlib
+#
 # === Authors
 #
 # Andrew Leonard
@@ -52,7 +56,8 @@ class bind (
   $provider = $bind::params::provider
   ) inherits bind::params {
 
-  package { $pkgs:
+  $pkg_list = keys($pkgs)
+  package { $pkg_list:
     ensure   => present,
     provider => $provider,
   }
