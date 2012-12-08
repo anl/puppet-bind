@@ -72,6 +72,6 @@ class bind (
 
   service { $bind::params::svc:
     enable  => $enable,
-    require => Package[$pkgs],
+    require => Package[$pkg_list],
   }
 }
