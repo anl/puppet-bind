@@ -71,8 +71,9 @@ class bind (
     # Hackishly install the package here - the Package[] below should always
     # succeed:
     exec { "Install ${pkg_list}":
-      command => "FILE=`${bind::params::mktemp}`; ${bind::params::wget} ${pkgs[$name]} -qO \$FILE; /usr/bin/dpkg -i \$FILE; ${bind::params::rm} \$FILE",
-      unless  => "/usr/bin/dpkg --list ${name}",
+      command  => "FILE=`${bind::params::mktemp}`; ${bind::params::wget} ${pkgs[$name]} -qO \$FILE; /usr/bin/dpkg -i \$FILE; ${bind::params::rm} \$FILE",
+      provider => shell,
+      unless   => "/usr/bin/dpkg --list ${name}",
     }
   }
 
