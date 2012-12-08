@@ -28,6 +28,14 @@
 # [*enable*]
 #   Set whether or not the service should be enabled.
 #
+# [*pkgs*]
+#   Hash of packages to install; key is the package name, value is a URL
+#   from which to download the package for custom packages.  (Set to "undef"
+#   when installing packages via apt.)
+#
+# [*provider*]
+#   Package provider to use; currently supported: apt, dpkg.
+#
 # [*running*]
 #   Value for "ensure" argument to BIND service; only used if
 #   control_svc_run is true.
@@ -35,6 +43,10 @@
 # === Examples
 #
 #  class bind { enable => false }
+#
+# === Requires
+#
+# puppetlabs/stdlib
 #
 # === Authors
 #
@@ -47,14 +59,33 @@
 class bind (
   $control_svc_run = false,
   $enable = true,
-  $running = true,
   $pkgs = $bind::params::pkgs,
-  $provider = $bind::params::provider
+  $provider = $bind::params::provider,
+  $running = true
   ) inherits bind::params {
 
-  package { $pkgs:
-    ensure   => present,
-    provider => $provider,
+  $pkg_list = keys($pkgs)
+
+  if $provider == 'dpkg' {
+
+    exec { "Download ${pkg_list}":
+      command => "${bind::params::wget} ${pkgs[$name]} -qO $name",
+      creates => "/root/${name}",
+      cwd     => '/root',
+    }
+
+    package { $pkg_list:
+      ensure   => present,
+      provider => $provider,
+      source   => "/root/${name}",
+      require  => Exec["Download ${name}"]
+    }
+
+  } else {
+    package { $pkg_list:
+      ensure   => present,
+      provider => $provider,
+    }
   }
 
   # Use a resource default to enforce desired state of service run control;
@@ -66,6 +97,6 @@ class bind (
 
   service { $bind::params::svc:
     enable  => $enable,
-    require => Package[$pkgs],
+    require => Package[$pkg_list],
   }
 }

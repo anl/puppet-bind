@@ -26,9 +26,10 @@ class bind::params {
 
   case $::operatingsystem {
     ubuntu: {
-      $pkgs = [ 'bind9' ]
+      $pkgs = { 'bind9' => undef }
       $provider = 'apt'
       $svc = 'bind9'
+      $wget = '/usr/bin/wget'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
