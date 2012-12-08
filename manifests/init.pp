@@ -28,6 +28,14 @@
 # [*enable*]
 #   Set whether or not the service should be enabled.
 #
+# [*pkgs*]
+#   Hash of packages to install; key is the package name, value is a URL
+#   from which to download the package for custom packages.  (Set to "undef"
+#   when installing packages via apt.)
+#
+# [*provider*]
+#   Package provider to use; currently supported: apt, dpkg.
+#
 # [*running*]
 #   Value for "ensure" argument to BIND service; only used if
 #   control_svc_run is true.
@@ -51,12 +59,22 @@
 class bind (
   $control_svc_run = false,
   $enable = true,
-  $running = true,
   $pkgs = $bind::params::pkgs,
-  $provider = $bind::params::provider
+  $provider = $bind::params::provider,
+  $running = true
   ) inherits bind::params {
 
   $pkg_list = keys($pkgs)
+
+  if $provider == 'dpkg' {
+    # Hackishly install the package here - the Package[] below should always
+    # succeed:
+    exec { "Install ${pkg_list}":
+      command => "FILE=`${bind::params::mktemp}`; ${bind::params::wget} ${pkgs[$name]} -qO \$FILE; /usr/bin/dpkg -i \$FILE; ${bind::params::rm} \$FILE",
+      unless  => "/usr/bin/dpkg --list ${name}",
+    }
+  }
+
   package { $pkg_list:
     ensure   => present,
     provider => $provider,
