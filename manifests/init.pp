@@ -67,18 +67,25 @@ class bind (
   $pkg_list = keys($pkgs)
 
   if $provider == 'dpkg' {
-    # Hackishly install the package here - the Package[] below should always
-    # succeed:
-    exec { "Install ${pkg_list}":
-      command  => "FILE=`${bind::params::mktemp}`; ${bind::params::wget} ${pkgs[$name]} -qO \$FILE; /usr/bin/dpkg -i \$FILE; ${bind::params::rm} \$FILE",
-      provider => shell,
-      unless   => "/usr/bin/dpkg --list ${name}",
-    }
-  }
 
-  package { $pkg_list:
-    ensure   => present,
-    provider => $provider,
+    exec { "Download ${pkg_list}":
+      command => "${bind::params::wget} ${pkgs[$name]} -qO $name",
+      creates => "/root/${name}",
+      cwd     => '/root',
+    }
+
+    package { $pkg_list:
+      ensure   => present,
+      provider => $provider,
+      source   => "/root/${name}",
+      require  => Exec["Download ${name}"]
+    }
+
+  } else {
+    package { $pkg_list:
+      ensure   => present,
+      provider => $provider,
+    }
   }
 
   # Use a resource default to enforce desired state of service run control;
