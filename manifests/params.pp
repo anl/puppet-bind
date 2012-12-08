@@ -29,9 +29,7 @@ class bind::params {
       $mktemp = '/bin/mktemp'
       $pkgs = { 'bind9' => undef }
       $provider = 'apt'
-      $rm = '/bin/rm'
       $svc = 'bind9'
-      $wget = '/usr/bin/wget'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
