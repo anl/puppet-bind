@@ -99,4 +99,17 @@ class bind (
     enable  => $enable,
     require => Package[$pkg_list],
   }
+
+  if (defined('ufw')) {
+
+    ufw::allow { 'allow-dns-over-udp':
+      port  => 53,
+      proto => 'udp',
+    }
+
+    ufw::allow { 'allow-dns-over-tcp':
+      port  => 53,
+      proto => 'tcp',
+    }
+  }
 }
