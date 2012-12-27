@@ -69,18 +69,7 @@ class bind (
 
   if $provider == 'dpkg' {
 
-    exec { "Download ${pkg_list}":
-      command => "${bind::params::wget} ${pkgs[$name]} -qO $name",
-      creates => "/root/${name}",
-      cwd     => '/root',
-    }
-
-    package { $pkg_list:
-      ensure   => present,
-      provider => $provider,
-      source   => "/root/${name}",
-      require  => Exec["Download ${name}"]
-    }
+    bind::install_pkg { $pkg_list: urls => $pkgs }
 
   } else {
     package { $pkg_list:
