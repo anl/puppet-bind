@@ -10,7 +10,8 @@
 # === Parameters
 #
 # [*repo*]
-#   Path to bare git repository.
+#   Name of bare git repository - not full path, repo will be placed within
+#   $user home directory.
 #
 # [*user*]
 #   Owner of bare git repository.
@@ -28,7 +29,7 @@
 # Copyright 2012 Andrew Leonard
 #
 class bind::git (
-  $repo = '/srv/bind.git',
+  $repo = 'bind.git',
   $user = 'git'
   ) {
 
@@ -46,7 +47,7 @@ class bind::git (
     require => User[$user],
   }
 
-  vcsrepo { $repo:
+  vcsrepo { "/home/${user}/${repo}":
     ensure   => bare,
     provider => git,
     user     => $user,
