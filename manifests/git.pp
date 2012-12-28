@@ -34,17 +34,10 @@ class bind::git (
   ) {
 
   user { $user:
-    ensure  => present,
-    comment => "BIND repo (${repo}) owner",
-    home    => "/home/${user}",
-  }
-
-  file { "/home/${user}":
-    ensure  => directory,
-    owner   => $user,
-    group   => $user,
-    mode    => '0700',
-    require => User[$user],
+    ensure     => present,
+    comment    => 'BIND config repo user',
+    home       => "/home/${user}",
+    managehome => true,
   }
 
   vcsrepo { "/home/${user}/${repo}":
