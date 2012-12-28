@@ -40,9 +40,17 @@ class bind::git (
     managehome => true,
   }
 
+  file { "/home/${user}/${repo}":
+    ensure => directory,
+    owner  => $user,
+    group  => $user,
+    mode   => '0700',
+  }
+
   vcsrepo { "/home/${user}/${repo}":
     ensure   => bare,
     provider => git,
     user     => $user,
+    require  => File["/home/${user}/${repo}"],
   }
 }
