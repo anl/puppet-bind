@@ -3,7 +3,7 @@
 # Configure BIND to receive its configuration via a Git repository.
 #
 # Based on/inspired by:
-# http://andyleonard.com/2012/01/21/git-pre-commit-hook-for-dns-zone-data/
+# http://andyleonard.com/2011/12/28/git-driven-bind-plus-fabric/
 #
 # == Parameters:
 #  [*repo_base*]
