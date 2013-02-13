@@ -1,4 +1,4 @@
 #!/bin/sh
 sudo GIT_WORK_TREE=/etc/bind /usr/bin/git checkout -f
-sudo chmod 0440 /etc/bind/rndc.key
-sudo chown bind:bind /etc/bind/rndc.key
+sudo /bin/chmod 0440 /etc/bind/rndc.key
+sudo /bin/chown bind:bind /etc/bind/rndc.key

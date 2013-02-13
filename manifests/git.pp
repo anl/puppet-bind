@@ -27,7 +27,7 @@
 #  - Andrew Leonard <andy.leonard@sbri.org>
 #
 # == Requires:
-#  - sudo
+#  - sudo::conf
 #  - vcsrepo
 #
 # == Sample Usage:
@@ -46,6 +46,11 @@ class bind::git(
     ensure     => present,
     comment    => 'BIND Git Repo User',
     managehome => true,
+  }
+
+  sudo::conf { $repo_user:
+    content => "${repo_user} ${::hostname}=(root) /bin/chmod, /bin/chown, /usr/bin/git",
+    require => User[$repo_user],
   }
 
   file { $repo_base:
