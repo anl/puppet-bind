@@ -2,6 +2,9 @@
 #
 # Configure BIND to receive its configuration via a Git repository.
 #
+# Based on/inspired by:
+# http://andyleonard.com/2012/01/21/git-pre-commit-hook-for-dns-zone-data/
+#
 # == Parameters:
 #  [*repo_base*]
 #    Filesystem path to parent directory of (bare) Git repository.
