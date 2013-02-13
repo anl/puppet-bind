@@ -21,7 +21,7 @@
 #  - Create $repo_user to own Git repo
 #  - Grant $repo_user limited sudo permissions
 #  - Manage ssh authorized_keys for $repo_user
-#  - Deploy repo
+#  - Deploy repo, with post-receive Git hook
 #
 # == Authors:
 #  - Andrew Leonard <andy.leonard@sbri.org>
@@ -60,5 +60,13 @@ class bind::git(
     user     => $repo_user,
     provider => git,
     require  => [ File[$repo_base], User[$repo_user] ],
+  }
+
+  file { "${repo_path}/hooks/post-receive":
+    ensure  => present,
+    owner   => $repo_user,
+    mode    => '0700',
+    source  => 'puppet:///modules/bind/post-receive',
+    require => Vcsrepo[$repo_path],
   }
 }
