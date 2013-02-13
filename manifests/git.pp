@@ -49,7 +49,7 @@ class bind::git(
   }
 
   sudo::conf { $repo_user:
-    content => "${repo_user} ${::hostname}=(root) /bin/chmod, /bin/chown, /usr/bin/git",
+    content => "${repo_user} ${::hostname}=(root) NOPASSWD: /bin/chmod, /bin/chown, /usr/bin/git",
     require => User[$repo_user],
   }
 
