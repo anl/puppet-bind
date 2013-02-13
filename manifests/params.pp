@@ -26,6 +26,8 @@ class bind::params {
 
   case $::operatingsystem {
     ubuntu: {
+      $group = 'bind'
+      $options_file = '/etc/bind/named.conf.options'
       $pkgs = { 'bind9' => undef }
       $provider = 'apt'
       $svc = 'bind9'
