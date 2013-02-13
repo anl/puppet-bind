@@ -3,8 +3,12 @@
 # Configure BIND to receive its configuration via a Git repository.
 #
 # == Parameters:
-#  [*repo_path*]
-#    Filesystem path to (bare) Git repository. Default: /srv/bind.git.
+#  [*repo_base*]
+#    Filesystem path to parent directory of (bare) Git repository.
+#    Default: /srv/bind
+#
+#  [*repo_name*]
+#    Name of bare Git repo to which BIND configuration is pushed.
 #
 #  [*repo_user*]
 #    Owner of Git repo at $repo_path.  This user will be granted limited
@@ -28,9 +32,12 @@
 # include bind::git
 #
 class bind::git(
-  $repo_path = '/srv/bind.git',
+  $repo_base = '/srv/bind',
+  $repo_name = 'bind.git',
   $repo_user = 'git'
   ) {
+
+  $repo_path = "${repo_base}/${repo_name}"
 
   user { $repo_user:
     ensure     => present,
@@ -38,10 +45,17 @@ class bind::git(
     managehome => true,
   }
 
+  file { $repo_base:
+    ensure  => directory,
+    owner   => $repo_user,
+    mode    => '0700',
+    require => User[$repo_user],
+  }
+
   vcsrepo { $repo_path:
     ensure   => bare,
     user     => $repo_user,
     provider => git,
-    require  => User[$repo_user],
+    require  => [ File[$repo_base], User[$repo_user] ],
   }
 }
